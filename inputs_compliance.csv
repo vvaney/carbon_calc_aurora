@@ -1,0 +1,10 @@
+group_number ,name,region,group_code,Start_Year,bulk,Acres,Live_Stocking,Dead_Stocking,Timber_Growth,Live_Baseline,Dead_Baseline,2022FollowCredits,2023FollowCredits,credit_registration,credit_transfer,initial_inventory_model,verification
+1,Cumberland Mountains,Appalachian,AP,2023,0,263.3150516,157.6149555,2.55,0.026850403,125.2544564,2.59,1.138282,3.761718,0.15,0.03,0,60
+8,Marmet,Appalachian,AP,2024,0,24.63592924,164.48,1.7,0.0285,105.2638055,2.07,0.064031,0,0.15,0.03,175,60
+10,Allegheny,Appalachian,AP,2023,0,42.81218,163.1720082,1.842230051,0.022830699,104.5462112,2.230988943,0.059867,0,0.15,0.03,175,60
+16,Glacial Lakes Compliance,Lake States,GL,2025,1,23.105,104,2,0.029,60.8,1,0,0,0.15,0.03,175,60
+19,WNH NMTC CARB Project,Lake States,GL,2025,0,13.09479137,92.55,1.27,0.042915443,59.12434947,1.31,0.026584,0,0.15,0.03,175,60
+26,Chateaugay CARB Project,Northeast,NE,2024,0,62.13735,113.59298,3.46597,0.015599142,100.61313,3.0003,0,0,0.15,0.03,175,60
+28,CT Lakes CARB Project,Northeast,NE,2023,0,141.062,82.50447,3.87249,0.026222709,66.10167,1.08047,0.011236,0,0.15,0.03,175,60
+33,Skinner Mountain,Appalachian,AP,2025,1,11.507,128.5705156,5.142820625,0.023,120.2303236,5.142820625,0,0,0.15,0.03,175,60
+34,Wapiti Woods,Appalachian,AP,2024,0,12.843,147.24,2.83,0.023,108.01,2.07,0,0.288,0.15,0.03,175,60

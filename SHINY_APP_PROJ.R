@@ -1,42 +1,15 @@
-library(dplyr)
-library(tidyverse)
-library(FinancialMath)
+
+library(shiny)
 library(ggplot2)
-library(tidyr)
-library(gganimate)
-library(gifski)
-library(truncnorm)
-library(writexl)
-library(openxlsx)
+library(dplyr)
 
-
-#ESTABLISHING GLOBAL INPUTS 
-global_inputs <- data.frame(
-  price_curve = 1,
-  stumpage_curve = 4,
-  discount_rate = 0.10,
-  inflation_rate = 0.025,
-  CMDA = 0.15,
-  capitalized_c_price = 40,
-  cap_mult = 25.625,
-  exp_mult = 16
-  
-)
-
-####################################################
-# Credit Issuance Model for Voluntary Carbon Markets 
-####################################################
-
-
-carbon_credit_model <- function(df, harvest_rate) {
-  
-  # set to default settings but you can change it to anything
+# Define the carbon credit model function
+carbon_credit_model <- function(df, harvest_rate, growth_rate) {
   
   # Extract project-specific inputs
   start_year <- as.numeric(df$Start_Year[1])
   live_stocking <- as.numeric(df$Live_Stocking[1])
   dead_stocking <- as.numeric(df$Dead_Stocking[1])
-  growth_rate <- as.numeric(df$Timber_Growth[1])
   acres <- as.numeric(df$Acres[1])
   initial_loss_rate <- as.numeric(df$Loss.Rate[1])
   loss_period <- as.numeric(df$Loss_Period[1])
@@ -48,16 +21,16 @@ carbon_credit_model <- function(df, harvest_rate) {
   
   # Calculate Baseline Scenario
   
-if (loss_period == 1){
-  loss_factor <- data.frame(
-    loss_factor = rep(1.0, years),
-    year = year_labels)
-  
-} else {
-   loss_factor <- data.frame(
-     loss_factor = c(rep(1.2, 6), rep(1, 14)),
-     year = year_labels)
-}
+  if (loss_period == 1){
+    loss_factor <- data.frame(
+      loss_factor = rep(1.0, years),
+      year = year_labels)
+    
+  } else {
+    loss_factor <- data.frame(
+      loss_factor = c(rep(1.2, 6), rep(1, 14)),
+      year = year_labels)
+  }
   
   loss_factor$loss_factor <- as.numeric(loss_factor$loss_factor)
   loss_factor$year <- as.numeric(loss_factor$year)
@@ -73,9 +46,8 @@ if (loss_period == 1){
   acre_carbon_baseline[1] <- (total_carbon_baseline_per_acre[1] * acres) / 1000
   current_loss_rate[1] <- initial_loss_rate
   
-  
   for (year in 2:years) {
-  
+    
     loss_factor_yr <- loss_factor$loss_factor[year - 1]
     if (year > loss_period) {
       current_loss_rate[year] <- growth_rate
@@ -246,204 +218,107 @@ if (loss_period == 1){
     }
   }
   
-  
   prop <- df$Group
   
   result <- data.frame(
     Year = year_labels,
     prop = prop,
-    removal_credit = issuance_df$removal_credit,
+    removal_credit = issuance_df$removal_credits,
     conservation_credit = conservation_credit
-    
   )
+  
+  
+  result <- result |>
+    filter(Year < 2036)
+  
+  
   
   return(result)
 }
 
-
-
-
-
-####################################
-# INPUT VARS HERE-------------------
-####################################
-
-
-harvest_rate <- data.frame(
-  harvest = c(0.15, 0.05, 0, rep(0, 17)),
-  year = 2024:2043 #### change years to fit start year
+# UI
+ui <- fluidPage(
+  titlePanel("Carbon Credit Model for Voluntary Carbon Markets"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("property", 
+                  "Select Property:", 
+                  choices = NULL),  # Choices will be populated dynamically in server
+      sliderInput("growth_rate",
+                  "Timber Growth Rate:",
+                  min = 0.01,
+                  max = 0.10,
+                  value = 0.05,
+                  step = 0.005)
+    ),
+    
+    mainPanel(
+      plotOutput("removalPlot"),
+      plotOutput("conservationPlot")
+    )
+  )
 )
 
-
-voluntary_inputs <- read.csv("Inputs_Voluntary.csv")
-voluntary_inputs <- voluntary_inputs[-1, ]
-
-
-
-
-#### choose property of interest ###
-
-filtered <- voluntary_inputs |>
-  filter(Group == "Boone")
-
-result <- carbon_credit_model(filtered, harvest_rate)
-
-
-
-#############
-#OUTPUTS
-##############
-
-credits_generated <- result |>
-  filter(Year < 2034)|> #select years 
-  mutate(removal_credit = removal_credit*1000, conservation_credit = conservation_credit*1000) |>
-  rename(Removal = removal_credit,
-         Conservation = conservation_credit)|>
-  pivot_longer(2:3, names_to = "Credit Type", values_to = "Credits")
-
-#write.csv(credits_generated, "credits_generated.csv", row.names = FALSE)
-
-
-
-
-#######################
-# DOWNLOAD PRICE CURVES
-######################
-
-# read in prices which you can change at any point in time just create a new CSV file from excel 
-
-removal_price <- read.csv("removal_price.csv")
-conservation_price <- read.csv("conservation_price.csv")
-
-
-###########################
-# calculate Prices
-###########################
-
-
-prices <- full_join(removal_price, conservation_price) %>%
-  rename(Removal = RemovalPrice,
-         Conservation = ConservationPrice) %>%
-  pivot_longer(2:3, names_to = "Credit Type", values_to = "Price")
-
-creditValue <- left_join(credits_generated, prices) %>%
-  mutate(Value = Credits*Price)
-
-discount_rate <- .1
-start_year <- year(today())-1
-
-carbonPV <- creditValue %>%
-  mutate(Period = Year - start_year) %>%
-    mutate(PV = Value/(1+discount_rate)^Period) %>%
-  group_by(`Credit Type`) %>%
-  summarise(PV = sum(PV))
-
-
-###########################
-#   MONTE  CARLOOOOO
-###########################
-
-
-mean_value <- 0.02568071
-standard_deviation <- 1
-
-# set upper and lower boundaries
-lower_bound <- 0.005
-upper_bound <- 0.06
-
-# Generate the normal distribution data
-set.seed(123)  # for reproducibility
-number_of_samples <- 1000
-
-normal_distribution <- rtruncnorm(number_of_samples,a = lower_bound,b = upper_bound,mean = mean_value, sd = 1)
-
-
-run_simulations <- function(df, harvest_rate, normal_distribution, num_simulations = 100) {
+# Server
+server <- function(input, output, session) {
   
-  # Set seed for reproducibility
-  set.seed(123)
+  # Load data once in the server function
+  voluntary_inputs <- read.csv("Inputs_Voluntary.csv")
+  voluntary_inputs <- voluntary_inputs[-1, ]
   
-  # Ensure the number of simulations does not exceed the length of the normal_distribution vector
-  num_simulations <- min(num_simulations, length(normal_distribution))
+  # Update the selectInput choices dynamically based on available properties
+  observe({
+    property_choices <- unique(voluntary_inputs$Group)
+    updateSelectInput(session, "property", choices = property_choices)
+  })
   
-  # Sample growth rates from the normal distribution
-  sampled_growth_rates <- sample(normal_distribution, num_simulations)
-  
-  simulation_results <- data.frame(
-    Simulation = integer(),
-    Year = integer(),
-    Growth_Rate = numeric(),
-    Removal_Credit = numeric(),
-    Conservation_Credit = numeric()
-  )
-  
-  for (i in 1:num_simulations) {
+  # Reactive expression to filter data and run the model
+  result_data <- reactive({
+    req(input$property)
     
-    # Set the growth rate for this simulation
-    df$Timber_Growth[1] <- sampled_growth_rates[i]
+    # Filter data based on the selected property
+    filtered <- voluntary_inputs |>
+      filter(Group == input$property)
     
-    # Run the carbon credit model with the new growth rate
-    result <- carbon_credit_model(df, harvest_rate)
-    
-    # Filter and calculate the credits generated
-    credits_generated <- result |>
-      filter(Year >= 2024 & Year <= 2034) |>
-      mutate(removal_credit = removal_credit * 1000, conservation_credit = conservation_credit * 1000)
-    
-    # Prepare data for this simulation
-    simulation_data <- data.frame(
-      Simulation = rep(i, nrow(credits_generated)),
-      Year = credits_generated$Year,
-      Growth_Rate = rep(sampled_growth_rates[i], nrow(credits_generated)),
-      Removal_Credit = credits_generated$removal_credit,
-      Conservation_Credit = credits_generated$conservation_credit
+    # Dynamically adjust harvest rate based on the selected property's start year
+    start_year <- as.numeric(filtered$Start_Year[1])
+    years <- 20  # Assuming a 20-year projection period
+    harvest_rate <- data.frame(
+      harvest = c(0.15, 0.05, 0, rep(0, years - 3)),  # Example harvest rate pattern
+      year = start_year:(start_year + years - 1)
     )
     
-    # Append to simulation_results
-    simulation_results <- rbind(simulation_results, simulation_data)
-  }
+    # Run the carbon credit model with the reactive growth_rate and adjusted harvest rate
+    result <- carbon_credit_model(filtered, harvest_rate, input$growth_rate)
+    
+    return(result)
+  })
   
-  return(simulation_results)
+  # Render removal credits plot
+  output$removalPlot <- renderPlot({
+    data <- result_data()
+    
+    ggplot(data, aes(x = Year, y = removal_credit)) +
+      geom_line(size = 1.5, color = "#7f216f") +  # Set the line thickness and color
+      labs(title = "Removal Credits Over Time",
+           x = "Year",
+           y = "Removal Credits") +
+      theme_minimal()  # Optional: cleaner theme
+  })
+  
+  # Render conservation credits plot
+  output$conservationPlot <- renderPlot({
+    data <- result_data()
+    
+    ggplot(data, aes(x = Year, y = conservation_credit)) +
+      geom_line(size = 1.5, color = "#008098") +  # Set the line thickness and color
+      labs(title = "Conservation Credits Over Time",
+           x = "Year",
+           y = "Conservation Credits") +
+      theme_minimal()  # Optional: cleaner theme
+  })
 }
 
-# Run simulations
-simulation_results <- run_simulations(kanawha_river, harvest_rate, normal_distribution)
-
-
-growth_rate_quantiles <- quantile(simulation_results$Growth_Rate, c(0.25, 0.5, 0.75))
-print(growth_rate_quantiles)  # Check the computed quantiles
-
-# Filter simulation_results for the specified growth rates and find which simulations have closest growth rate to 10th and 90th percentiler 
-
-filtered_results_quants <- simulation_results %>%
-  filter(between(Growth_Rate, growth_rate_quantiles[1] - 0.001, growth_rate_quantiles[1] + 0.001) |
-           between(Growth_Rate, growth_rate_quantiles[3] - 0.001, growth_rate_quantiles[3] + 0.001))
-
-
-
-
-
-# for mean 
-
-filtered_results_mean <- simulation_results %>% 
-  filter(between(Growth_Rate, growth_rate_quantiles[2] - 0.0001, growth_rate_quantiles[2] + 0.0001))|>
-  filter(Simulation == 16)
-
-
-ribbon_data <- filtered_results_quants %>%
-  group_by(Year) %>%
-  summarise(
-    ymin = min(Removal_Credit),
-    ymax = max(Removal_Credit)
-  )
-
-# Plotting with ggplot2
-ggplot() +
-  geom_line(data = filtered_results_mean, mapping = aes(x = Year, y = Removal_Credit), color = "red") +
-  geom_ribbon(data = ribbon_data, aes(x = Year, ymin = ymin, ymax = ymax), fill = "pink", alpha = 0.2) +
-  labs(title = "Simulated Growth Rates and Removal Credits",
-       x = "Year",
-       y = "Removal Credit") +
-  theme_minimal()
-
-
+# Run the app
+shinyApp(ui = ui, server = server)

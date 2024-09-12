@@ -1,0 +1,365 @@
+---
+title: "Soil Extraction"
+author: "Valentina Vaney"
+format: html
+editor: visual
+---
+
+## Extracting Site Index or Productivity from SSURGO
+
+Here we are using data downloaded from [SSURGO](https://websoilsurvey.nrcs.usda.gov/app/WebSoilSurvey.aspx) and extracting either site index for FVS runs or productivity values. Both site index values and productivity values come from the cforprod table which can be identified by a cokey a unique identifier key for soil series.
+
+#### **How They Connect**
+
+-   **MUKEY to COKEY**: The `mukey` links the spatial data and map unit descriptions to the components within that map unit. In the tabular data, you would find the `mukey` in a table like `mapunit`, which could then be linked to the `component` table using the `mukey`. The `component` table contains the `cokey` for each soil component in the map unit.
+
+-   **MUSYM to MUKEY**: The `musym` is associated with the `mukey` in the `mapunit` table, providing a more human-readable identifier for each map unit. It doesn’t directly connect to the `cokey`, but through the `mukey`, it can be linked to the components.
+
+In summary:
+
+-   **MUKEY**: A unique identifier for each map unit.
+
+-   **MUSYM**: A more readable code for each map unit, associated with `mukey`.
+
+-   **COKEY**: A unique identifier for each soil component within a map unit, linked to `mukey`.
+
+This hierarchical structure allows detailed information about soils to be organized and accessed in a systematic way within the SSURGO database.
+
+### Beginning steps
+
+1.  before we start extracting data we must download required packages
+
+```{r, echo=FALSE}
+required_packages <- c("sf", "tidyverse", "ggplot2", "rnaturalearth", 
+                       "soilDB", "dplyr", "sp", "odbc", "tigris", 
+                       "lwgeom", "data.table","knitr","kableExtra")
+
+# Function to check and install packages
+install_if_missing <- function(packages) {
+  installed <- installed.packages()
+  for (pkg in packages) {
+    if (!pkg %in% installed[, "Package"]) {
+      install.packages(pkg)
+    }
+  }
+}
+
+# Install missing packages
+install_if_missing(required_packages)
+
+# Load the libraries
+library(sf)
+library(tidyverse)
+library(ggplot2)
+library(rnaturalearth)
+library(soilDB)
+library(dplyr)
+library(sp)
+library(odbc)
+library(tigris)
+library(lwgeom)
+library(data.table)
+library(knitr)
+```
+
+### Download Soil Data
+
+1.  Go to the [Web Soil Survey](https://websoilsurvey.nrcs.usda.gov/app/WebSoilSurvey.aspx).
+2.  click tab U.S. General soil map. Select your state where property is located
+3.  Download the soil data file (typically in a ZIP format) and save it to your local repository.
+4.  Unzip the zip file and extract both the spatial and tabular folder
+
+### USA base map and specify state of interest
+
+\*\* here I am using Maine but you can change it to any state you want by editing the text and defining the state needed
+
+```{r, echo=FALSE}
+
+tigris_use_cache = TRUE
+
+# Load USA states map
+usa <- ne_states(country = "united states of america", returnclass = "sf")
+
+# Choose state where property is located
+TN_BaseMap<- usa %>% filter(name %in% c("Maine")) #edit here
+
+```
+
+#### Download Property Shape file, transform shape files and create the intersect
+
+1.  start off by reading in the shape file for your property between the quotes click tab and find shapefile
+
+```{r, echo=FALSE}
+property_of_interest  <- st_read("Hilton/HILTON_STANDS.shp")
+
+```
+
+2.  Now that we have the property shape file downloaded we need to make sure they are in the same projection and then applying an intersect
+
+```{r, echo=FALSE}
+
+TN_BaseMap <- st_zm(TN_BaseMap)
+property_of_interest <- st_zm(property_of_interest)
+
+# Define the target CRS---------------------------
+utm_crs <- st_crs(32616)
+
+
+# Transform the layers to the same CRS
+TN_BaseMap <- st_transform(TN_BaseMap, crs = utm_crs)
+property_of_interest <- st_transform(property_of_interest, crs = utm_crs)
+
+property_of_interest_acres <- property_of_interest |>
+    mutate(area = st_area(geometry))|>
+  mutate(area = st_area(geometry),
+         area_acres = as.numeric(area) / 4046.86)
+
+
+# Calculate the bounding box of the property of interest
+bbox <- st_bbox(property_of_interest)
+
+```
+
+\*\* important to visually identify property before you proceed
+
+```{r}
+# Create the plot with ggplot2
+plotz <- ggplot() +
+  geom_sf(data = TN_BaseMap) +
+  geom_sf(data = property_of_interest) +
+  labs(title = "TN Base") +
+  coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]), ylim = c(bbox["ymin"], bbox["ymax"]))
+
+print(plotz)
+```
+
+3.  Double check if all acres are accounted for by running code below
+
+```{r, echo=FALSE}
+sum_acres <- sum(property_of_interest_acres$area_acres)
+print(sum_acres)
+```
+
+### Uploading websoil survey spatial data
+
+1.  .In the downloaded file of websoil survey data there are 2 folders: spatial and tabular.
+
+2.  extract all spatial files from the spatial folder onto your R project and read in the shp. file
+
+```{r, echo=FALSE}
+
+tn_SSURGO_shp <- st_read("Hilton/spatial/gsmsoilmu_a_me.shp")
+
+tn_SSURGO_shp <- st_transform(tn_SSURGO_shp,utm_crs)
+
+tn_SSURGO_shp <- tn_SSURGO_shp |>
+  select(-AREASYMBOL,-SPATIALVER)
+
+```
+
+```{r, echo=FALSE}
+
+# Ensure both layers have the same CRS
+utm_crs <- st_crs(32616)
+property_of_interest <- st_transform(property_of_interest, crs = utm_crs)
+tn_SSURGO_shp <- st_transform(tn_SSURGO_shp, crs = utm_crs)
+
+# Ensure geometries are valid
+property_of_interest <- st_make_valid(property_of_interest)
+tn_SSURGO_shp <- st_make_valid(tn_SSURGO_shp)
+
+# Optionally buffer the property of interest slightly (e.g., by 0.1 units)
+    #property_of_interest <- st_buffer(property_of_interest, 0.1)
+
+# Use st_intersects to filter first
+intersects <- st_intersects(property_of_interest, tn_SSURGO_shp, sparse = FALSE)
+filtered_ssurgo <- tn_SSURGO_shp[apply(intersects, 2, any), ]
+
+# Perform intersection
+intersection_planar <- st_intersection(property_of_interest, filtered_ssurgo)
+
+# Calculate areas of the intersected geometries
+consolidated_geometries <- intersection_planar |>
+  group_by(MUSYM,MUKEY) |>
+  summarize(geometry = st_union(geometry)) |>
+    mutate(area = st_area(geometry),
+         area_acres = as.numeric(area) / 4046.86)
+
+# Ensure the consolidated geometries remain a simple feature (sf) object
+consolidated_geometries <- st_as_sf(consolidated_geometries)
+
+
+
+```
+
+```{r}
+# Visualize the result
+ggplot() +
+  geom_sf(data = TN_BaseMap) +
+  geom_sf(data = intersection_planar, aes(fill = MUSYM)) +
+  labs(title = "TN Base with Property Intersection")+
+  coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]), ylim = c(bbox["ymin"],bbox["ymax"]))
+
+```
+
+## Begin by reading in tabular data
+
+\*\* Now that you have MUKEYS for every stand we can begin reading in the tabular data and extracting***: cokey*** **, *compame* , *siteIndex \*\****
+
+1.  go to tabular folder from downloaded data from state
+2.  select comp and cforprod table and read it in using the function freads
+3.  the data frame will not have any col names but luckily i wrote a query that will assign names to cols 😊
+
+```{r,echo=FALSE}
+
+#components table will link mukey and musym to cokeys which are then used for extracting any soil and producitivity data corresponsing to area of interest
+components <- fread("Hilton/tabular/comp.txt")
+
+#renaming cols so you don't have to 🐬
+components <- components |>
+  mutate(compact_r = V2, compname = V4,mukey = V108, cokey = V109) |>
+  select(mukey,cokey,compact_r,compname) |>
+  rename(MUKEY = mukey)
+
+
+#dowloading c_forprod table which includes both the producitivity values as well as site index
+
+cforprod <- fread("Hilton/tabular/cfprod.txt")
+cforprod <- cforprod |>
+  rename(plantsym = V1 , plantsciname = V2, plantcomname = V3, site_base = V4,site_i = V5, 
+         siteIndex = V6, site_2 = V7, fprod_1 = V8, fprod_2 = V9, f_prod_3 = V10, cokey = V11,cforprokey = V12)
+
+
+```
+
+##### Once both tables are downloaded we can now perform a merge (full merge) by mukey so that we can get corresponding cokeys and producitivity values from the cforprod table
+
+```{r,echo=FALSE}
+#make mukey into a factor
+components$MUKEY <- as.factor(components$MUKEY) 
+
+lets_go <- merge(components,consolidated_geometries,by = "MUKEY",allow.cartesian = TRUE)
+
+```
+
+```{r}
+# always plot data as a way to verify your work!!!!
+ggplot() +
+  geom_sf(data = TN_BaseMap) +
+  geom_sf(data = lets_go, aes(geometry = geometry,fill = MUSYM))  +
+  coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]), ylim = c(bbox["ymin"], bbox["ymax"])) +
+  labs(title = "Different Soil series in Property of Interest")
+ 
+```
+
+NOTE THAT: we can see that for each MUSYM compact_r adds to 100. Compact_r is the percent of soil series per MUSYM otherwise known as map unit.
+
+```{r}
+
+# here we are linking cokeys in map to corresponding producitivity values 
+list_co <- lets_go$cokey
+
+try_again <- merge(cforprod,lets_go, by = "cokey", allow.cartesian = TRUE)
+try_again <- try_again |>
+  drop_na(siteIndex)
+
+
+ggplot() +
+  geom_sf(data = TN_BaseMap) +
+  geom_sf(data = try_again, aes(geometry = geometry,fill = siteIndex))  +
+  coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]), ylim = c(bbox["ymin"], bbox["ymax"])) +
+  labs(title = "Site Index for Property of Interest")
+ 
+
+
+export_prod_site_index <- try_again |>
+  select(cokey,MUKEY,MUSYM,plantsciname,plantcomname,siteIndex,fprod_2,compname,compact_r,area,area_acres,geometry)
+
+
+
+#uncomment line below to get all raw values for producitivity and site index:
+
+# write_xlsx(export_prod_site_index, "formatted_table.xlsx")
+```
+
+Sometimes this approach will not work and instead you may need to use compname to search for site index values associated with the soil series instead of the exact area in map
+
+-   uncomment code and run it:
+
+    -   uncomment means taking away the hashtags in front of actual code. leave the full sentences commented
+
+```{r,echo=FALSE}
+
+#grabbing cokeys from property data and checking to see what are the corresponding compnames ( soil series name)
+  #if cokey not available
+
+# grabbing cokeys from property data and checking to see what are the            corresponding compnames ( soil series name) 
+
+
+#finding_comp_name <- components |> filter(cokey %in% list_co)
+#hell_0 <- finding_comp_name$compname
+
+#grabbing all cokeys associated with those companes (soilseries)
+
+#comp_names_needed <- components|> filter(compname %in% hell_0)
+#miao <- comp_names_needed$cokey
+
+
+# try_again <- cforprod |>
+#   filter(cokey %in% miao
+```
+
+**This part is optional but encouraged. The next chunk of code will weight site index values by area represented and make a average by species.**
+
+-   Table will be printed for your convenience.
+
+-   once table is printed select species that has highest % basal area in property and use that value in step 3 when producing FVS script
+
+```{r,echo=FALSE}
+# average site index per species per map unit
+
+plot_w_avg <- try_again |>
+  group_by(MUSYM, plantcomname) |>
+  summarize(
+    avg_site_index = mean(siteIndex, na.rm = TRUE), 
+    geometry = st_union(geometry)
+  ) |>
+  mutate(area = st_area(geometry),
+         area_acres = as.numeric(area) / 4046.86)|>
+  filter(!is.nan(avg_site_index))
+
+
+
+# Initialize an empty data frame to store the results
+# Initialize an empty list to store the results
+results_list <- list()
+
+# Loop through each unique plantcomname
+for (plant in unique(plot_w_avg$plantcomname)) {
+  # Subset the data for the current plantcomname
+  tmp <- plot_w_avg[plot_w_avg$plantcomname == plant, ]
+  
+  # Calculate the weighted production for the subset
+  tmp$weighted_SI <- tmp$avg_site_index * tmp$area_acres
+  
+  # Calculate the total weighted production and total area for the subset
+  total_weighted_SI <- sum(tmp$weighted_SI)
+  total_area_acres <- sum(tmp$area_acres)
+  
+  # Calculate the weighted average production
+  weighted_average_SI <- total_weighted_SI / total_area_acres
+  
+  # Store the result in the list
+  results_list[[plant]] <- data.frame(
+    weighted_average_SI = weighted_average_SI
+  )
+}
+
+# Combine the results into a final data frame
+lets_go_final <- do.call(rbind, results_list)
+
+```
+
+```{r}
+print(lets_go_final)
+```

@@ -1,0 +1,102 @@
+---
+title: "Find variant and location code"
+output: html_document
+date: ""
+---
+```{r packages, include=FALSE}
+required_packages <- c("sf", "tidyverse", "ggplot2", "rnaturalearth", 
+                       "soilDB", "dplyr", "sp", "odbc", "tigris", 
+                       "lwgeom", "data.table","knitr")
+
+# Function to check and install packages
+install_if_missing <- function(packages) {
+  installed <- installed.packages()
+  for (pkg in packages) {
+    if (!pkg %in% installed[, "Package"]) {
+      install.packages(pkg)
+    }
+  }
+}
+
+# Install missing packages
+install_if_missing(required_packages)
+
+# Load the libraries
+library(sf)
+library(tidyverse)
+library(ggplot2)
+library(rnaturalearth)
+library(soilDB)
+library(dplyr)
+library(sp)
+library(odbc)
+library(tigris)
+library(lwgeom)
+library(data.table)
+library(knitr)
+```
+
+##FVS map
+```{r load var_map, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Read variant map
+variant_map <- read_sf("FVSVariantMap20210525/FVS_Variants_and_Locations.shp")
+variant_map <- variant_map %>%
+  filter(FVSVariant != "AK" & FVSVariant != "HI")
+
+# Read USA shapefile
+usa <- ne_states(country = "united states of america", returnclass = "sf")
+usa <- usa %>%
+  filter(name != "Alaska" & name != "Hawaii")
+
+#set albers projection
+utm_crs <- st_crs(32616) 
+
+ggplot()+
+  geom_sf(data = usa) + 
+  geom_sf(data = variant_map, mapping = aes(fill = FVSVariant))
+
+
+```
+
+
+```{r function, echo=FALSE}
+plot_variant_map <- function(your_shape) {
+  library(sf)
+  library(rnaturalearth)
+  
+  # Transform variant map and USA shapefiles to UTM
+  variant_map <- st_transform(variant_map, utm_crs)
+  
+  # If input is a string (path to shapefile), read the shapefile
+  if (is.character(your_shape)) {
+    your_shape <- read_sf(your_shape)
+  }
+  
+  # Transform your shapefile to UTM
+  your_shape <- st_transform(your_shape, utm_crs)
+  
+  # Find intersection between your shape and variant map
+  var_shp <- st_intersection(your_shape, variant_map)
+  
+  # Extract unique VARIANT and LOCATION
+  VARIANT <- unique(var_shp$FVSVariant)
+  LOCATION <- unique(var_shp$FVSLocCode)
+  
+  # Create a data frame with VARIANT and LOCATION
+  result <- data.frame(VARIANT = VARIANT, LOCATION = LOCATION)
+  
+  return(result)
+}
+
+```
+
+## Upload your shape file and RUN!
+
+```{r pressure, echo=FALSE}
+hello <- read_sf("Hilton/HILTON_STANDS.shp") #insert your shape file here ;)
+plot_variant_map(hello)
+```
+
+

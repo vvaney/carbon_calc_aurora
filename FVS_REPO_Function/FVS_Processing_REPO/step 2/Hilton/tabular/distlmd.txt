@@ -1,0 +1,2 @@
+"Country"|"US"|"United States"|||"partly certified, all components"|10/12/2016 17:33:53|"STATSGO was first published to the Soil Data Mart in 2004.  This 2016 version is the second time STATSGO has been refreshed.  This refresh contains a variety of edits from a variety of states during 2004 to 2016 timeframe.  
+This refresh also include the complete redevelopment of the Alaska STATSGO.  The AK metadata can be found in the Legend Text table."|"15970"|"53763"|"53665"

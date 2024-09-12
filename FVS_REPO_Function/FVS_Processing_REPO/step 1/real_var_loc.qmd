@@ -1,0 +1,101 @@
+---
+title: "var_loc"
+author: "Valentina Vaney"
+format: html
+editor: visual
+---
+
+### Function for finding FVS inputs: VAR and LOC
+
+all FVS input files need two identifier keys so that it can calibrate model based on location of property. This script gets you both the variant and location codes needed for input generation. Use these in step 3 when creating FVS input.
+
+#### Install Required Packages
+
+```{r,echo=FALSE}
+required_packages <- c("sf", "tidyverse", "ggplot2", "rnaturalearth", 
+                       "soilDB", "dplyr", "sp", "odbc", "tigris", 
+                       "lwgeom", "data.table","knitr")
+
+# Function to check and install packages
+install_if_missing <- function(packages) {
+  installed <- installed.packages()
+  for (pkg in packages) {
+    if (!pkg %in% installed[, "Package"]) {
+      install.packages(pkg)
+    }
+  }
+}
+
+# Install missing packages
+install_if_missing(required_packages)
+
+# Load the libraries
+library(sf)
+library(tidyverse)
+library(ggplot2)
+library(rnaturalearth)
+library(soilDB)
+library(dplyr)
+library(sp)
+library(odbc)
+library(tigris)
+library(lwgeom)
+library(data.table)
+```
+
+### load the FVS variant map
+
+```{r,echo=FALSE}
+# Read variant map
+variant_map <- read_sf("FVSVariantMap20210525/FVS_Variants_and_Locations.shp")
+
+variant_map <- variant_map %>%
+  filter(FVSVariant != "AK" & FVSVariant != "HI")
+
+# Read USA shapefile
+usa <- ne_states(country = "united states of america", returnclass = "sf")
+usa <- usa %>%
+  filter(name != "Alaska" & name != "Hawaii")
+
+#set albers projection
+utm_crs <- st_crs(32616) 
+```
+
+### Create the function that will extract var and loc for your shapefile
+
+```{r,echo=FALSE}
+plot_variant_map <- function(your_shape) {
+  
+  # Transform variant map and USA shapefiles to UTM
+  variant_map <- st_transform(variant_map, utm_crs)
+  
+  # If input is a string (path to shapefile), read the shapefile
+  if (is.character(your_shape)) {
+    your_shape <- read_sf(your_shape)
+  }
+  
+  # Transform your shapefile to UTM
+  your_shape <- st_transform(your_shape, utm_crs)
+  
+  # Find intersection between your shape and variant map
+  var_shp <- st_intersection(your_shape, variant_map)
+  
+  # Extract unique VARIANT and LOCATION
+  VARIANT <- unique(var_shp$FVSVariant)
+  LOCATION <- unique(var_shp$FVSLocCode)
+  
+  # Create a data frame with VARIANT and LOCATION
+  result <- data.frame(VARIANT = VARIANT, LOCATION = LOCATION)
+  
+  return(result)
+}
+```
+
+### Upload your shape file here
+
+Between the double quotes in green delete whats in there and click tab until you find the shape file of interest. Don't forget that this is a remote repo and if you want your shape file of choice to be easily accessible upload it to this repository ;)
+
+```{r,echo=FALSE}
+hello <- read_sf("property/HILTON_STANDS.shp") #insert your shape file here ;)
+plot_variant_map(hello)
+```

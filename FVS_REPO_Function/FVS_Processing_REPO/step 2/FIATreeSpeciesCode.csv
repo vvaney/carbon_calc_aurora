@@ -1,0 +1,459 @@
+SPCD,COMMON_NAME,SCI_NAME
+10,fir spp. ,Abies spp
+11,Pacific silver fir,Abies amabilis
+12,balsam fir ,Abies balsamea
+14,Santa Lucia or bristlecone fir,Abies bracteata
+15,white fir ,Abies concolor
+16,Fraser fir,Abies fraseri
+17,grand fir ,Abies grandis
+18,corkbark fir,Abies lasiocarpa var. arizonica
+19,subalpine fir,Abies lasiocarpa
+20,California red fir,Abies magnifica
+21,Shasta red fir,Abies shastensis
+22,noble fir,Abies procera
+40,white-cedar spp.,Chamaecyparis spp.
+41,Port-Orford-cedar,Chamaecyparis lawsoniana
+42,Alaska yellow-cedar,Chamaecyparis nootkatensis
+43,Atlantic white-cedar,Chamaecyparis thyoides
+50,cypress,Cupressus spp.
+51,Arizona cypress,Cupressus arizonica
+52,Baker or Modoc cypress,Cupressus bakeri
+53,Tecate cypress,Cupressus forbesii
+54,Monterey cypress,Cupressus macrocarpa
+55,Sargent's cypress,Cupressus sargentii
+56,MacNab's cypress,Cupressus macnabiana
+57,redcedar/juniper spp.,Juniperus spp.
+58,Pinchot juniper,Juniperus pinchotii
+59,redberry juniper,Juniperus coahuilensis
+60,drooping juniper,Juniperus flaccida
+61,Ashe juniper,Juniperus ashei
+62,California juniper,Juniperus californica
+63,alligator juniper,Juniperus deppeana
+64,western juniper,Juniperus occidentalis
+65,Utah juniper,Juniperus osteosperma
+66,Rocky Mountain juniper,Juniperus scopulorum
+67,southern redcedar,Juniperus virginiana var. silicicola
+68,eastern redcedar,Juniperus virginiana
+69,oneseed juniper,Juniperus monosperma
+70,larch spp.,Larix spp.
+71,tamarack (native),Larix laricina
+72,subalpine larch,Larix lyallii
+73,western larch,Larix occidentalis
+81,incense-cedar,Calocedrus decurrens
+90,spruce spp.,Picea spp.
+91,Norway spruce,Picea abies
+92,Brewer spruce,Picea breweriana
+93,Engelmann spruce,Picea engelmannii
+94,white spruce,Picea glauca
+95,black spruce,Picea mariana
+96,blue spruce,Picea pungens
+97,red spruce,Picea rubens
+98,Sitka spruce,Picea sitchensis
+100,pine spp.,Pinus spp.
+101,whitebark pine,Pinus albicaulis
+102,Rocky Mountain bristlecone pine,Pinus aristata
+103,knobcone pine,Pinus attenuata
+104,foxtail pine,Pinus balfouriana
+105,jack pine,Pinus banksiana
+106,common or two-needle pinyon,Pinus edulis
+107,sand pine,Pinus clausa
+108,lodgepole pine,Pinus contorta
+109,Coulter pine,Pinus coulteri
+110,shortleaf pine,Pinus echinata
+111,slash pine,Pinus elliottii
+112,Apache pine,Pinus engelmannii
+113,limber pine,Pinus flexilis
+114,southwestern white pine,Pinus strobiformis
+115,spruce pine,Pinus glabra
+116,Jeffrey pine,Pinus jeffreyi
+117,sugar pine,Pinus lambertiana
+118,Chihuahuan pine,Pinus leiophylla
+119,western white pine,Pinus monticola
+120,bishop pine,Pinus muricata
+121,longleaf pine,Pinus palustris
+122,ponderosa pine,Pinus ponderosa
+123,Table Mountain pine,Pinus pungens
+124,Monterey pine,Pinus radiata
+125,red pine,Pinus resinosa
+126,pitch pine,Pinus rigida
+127,gray or California foothill pine,Pinus sabiniana
+128,pond pine,Pinus serotina
+129,eastern white pine,Pinus strobus
+130,Scotch pine,Pinus sylvestris
+131,loblolly pine,Pinus taeda
+132,Virginia pine,Pinus virginiana
+133,singleleaf pinyon,Pinus monophylla
+134,border pinyon,Pinus discolor
+135,Arizona pine,Pinus arizonica
+136,Austrian pine,Pinus nigra
+137,Washoe pine,Pinus washoensis
+138,four-leaf or Parry pinyon pine,Pinus quadrifolia
+139,Torrey pine,Pinus torreyana
+140,Mexican pinyon pine,Pinus cembroides
+141,papershell pinyon pine,Pinus remota
+142,Great Basin bristlecone pine,Pinus longaeva
+143,Arizona pinyon pine,Pinus monophylla var. fallax
+144,Honduras pine,Pinus elliottii var. elliottii
+200,Douglas-fir spp.,Pseudotsuga spp.
+201,bigcone Douglas-fir,Pseudotsuga macrocarpa
+202,Douglas-fir,Pseudotsuga menziesii
+211,redwood,Sequoia sempervirens
+212,giant sequoia,Sequoiadendron giganteum
+220,baldcypress spp.,Taxodium spp.
+221,baldcypress,Taxodium distichum
+222,pondcypress,Taxodium ascendens
+223,Montezuma baldcypress,Taxodium mucronatum
+230,yew spp.,Taxus spp.
+231,Pacific yew,Taxus brevifolia
+232,Florida yew,Taxus floridana
+240,thuja spp.,Thuja spp.
+241,northern white-cedar,Thuja occidentalis
+242,western redcedar,Thuja plicata
+250,torreya (nutmeg) spp.,Torreya spp.
+251,California torreya (nutmeg),Torreya californica
+252,Florida torreya (nutmeg),Torreya taxifolia
+260,hemlock spp.,Tsuga spp.
+261,eastern hemlock,Tsuga canadensis
+262,Carolina hemlock,Tsuga caroliniana
+263,western hemlock,Tsuga heterophylla
+264,mountain hemlock,Tsuga mertensiana
+299,Unknown dead conifer,Tree evergreen
+300,acacia spp.,Acacia spp.
+303,sweet acacia,Acacia farnesiana
+304,catclaw acacia,Acacia greggii
+310,maple spp.,Acer spp.
+311,Florida maple,Acer barbatum
+312,bigleaf maple,Acer macrophyllum
+313,boxelder,Acer negundo
+314,black maple,Acer nigrum
+315,striped maple,Acer pensylvanicum
+316,red maple,Acer rubrum
+317,silver maple,Acer saccharinum
+318,sugar maple,Acer saccharum
+319,mountain maple,Acer spicatum
+320,Norway maple,Acer platanoides
+321,Rocky Mountain maple,Acer glabrum
+322,bigtooth maple,Acer grandidentatum
+323,chalk maple,Acer leucoderme
+330,"buckeye, horsechestnut spp.",Aesculus spp.
+331,Ohio buckeye,Aesculus glabra
+332,yellow buckeye,Aesculus flava
+333,California buckeye,Aesculus californica
+334,Texas buckeye,Aesculus glabra var. arguta
+336,red buckeye,Aesculus pavia
+337,painted buckeye,Aesculus sylvatica
+341,ailanthus,Ailanthus altissima
+345,"mimosa, silktree",Albizia julibrissin
+350,alder spp.,Alnus spp.
+351,red alder,Alnus rubra
+352,white alder,Alnus rhombifolia
+353,Arizona alder,Alnus oblongifolia
+355,European alder,Alnus glutinosa
+356,serviceberry spp.,Amelanchier spp.
+357,common serviceberry,Amelanchier arborea
+358,roundleaf serviceberry,Amelanchier sanguinea
+360,madrone spp.,Arbutus spp.
+361,Pacific madrone,Arbutus menziesii
+362,Arizona madrone,Arbutus arizonica
+363,Texas madrone,Arbutus xalapensis
+367,pawpaw,Asimina triloba
+370,birch spp.,Betula spp.
+371,yellow birch,Betula alleghaniensis
+372,sweet birch,Betula lenta
+373,river birch,Betula nigra
+374,water birch,Betula occidentalis
+375,paper birch,Betula papyrifera
+377,Virginia roundleaf birch,Betula uber
+378,northwestern paper birch,Betula x utahensis
+379,gray birch,Betula populifolia
+381,"chittamwood, gum bumelia", Sideroxylon lanuginosum ssp. lanuginosum
+391,"American hornbeam, musclewood",Carpinus caroliniana
+400,hickory spp.,Carya spp.
+401,water hickory,Carya aquatica
+402,bitternut hickory,Carya cordiformis
+403,pignut hickory,Carya glabra
+404,pecan,Carya illinoinensis
+405,shellbark hickory,Carya laciniosa
+406,nutmeg hickory,Carya myristiciformis
+407,shagbark hickory,Carya ovata
+408,black hickory,Carya texana
+409,mockernut hickory,Carya alba
+410,sand hickory,Carya pallida
+411,scrub hickory,Carya floridana
+412,red hickory,Carya ovalis
+413,southern shagbark hickory,Carya carolinae-septentrionalis
+420,chestnut spp.,Castanea spp.
+421,American chestnut,Castanea dentata
+422,Allegheny chinkapin,Castanea pumila
+423,Ozark chinkapin,Castanea pumila var. ozarkensis
+424,Chinese chestnut,Castanea mollissima
+431,"giant chinkapin, golden chinkapin",Chrysolepis chrysophylla var. chrysophylla
+450,catalpa spp.,Catalpa spp.
+451,southern catalpa,Catalpa bignonioides
+452,northern catalpa,Catalpa speciosa
+460,hackberry spp.,Celtis spp.
+461,sugarberry,Celtis laevigata
+462,hackberry,Celtis occidentalis
+463,netleaf hackberry,Celtis laevigata var. reticulata
+471,eastern redbud,Cercis canadensis
+475,curlleaf mountain-mahogany,Cercocarpus ledifolius
+481,yellowwood,Cladrastis kentukea
+490,dogwood spp.,Cornus spp.
+491,flowering dogwood,Cornus florida
+492,Pacific dogwood,Cornus nuttallii
+500,hawthorn spp.,Crataegus spp.
+501,cockspur hawthorn,Crataegus crus-galli
+502,downy hawthorn,Crataegus mollis
+503,Brainerd's hawthorn,Crataegus brainerdii
+504,pear hawthorn,Crataegus calpodendron
+505,fireberry hawthorn,Crataegus chrysocarpa
+506,broadleaf hawthorn,Crataegus dilatata
+507,fanleaf hawthorn,Crataegus flabellata
+508,oneseed hawthorn,Crataegus monogyna
+509,scarlet hawthorn,Crataegus pedicellata
+510,eucalyptus spp.,Eucalyptus spp.
+511,Tasmanian bluegum,Eucalyptus globulus
+512,river redgum,Eucalyptus camaldulensis
+513,grand eucalyptus,Eucalyptus grandis
+514,swampmahogany,Eucalyptus robusta
+520,persimmon spp.,Diospyros spp.
+521,common persimmon,Diospyros virginiana
+522,Texas persimmon,Diospyros texana
+523,Anacua knockaway,Ehretia anacua
+531,American beech,Fagus grandifolia
+540,ash spp.,Fraxinus spp.
+541,white ash,Fraxinus americana
+542,Oregon ash,Fraxinus latifolia
+543,black ash,Fraxinus nigra
+544,green ash,Fraxinus pennsylvanica
+545,pumpkin ash,Fraxinus profunda
+546,blue ash,Fraxinus quadrangulata
+547,velvet ash,Fraxinus velutina
+548,Carolina ash,Fraxinus caroliniana
+549,Texas ash,Fraxinus texensis
+550,honeylocust spp.,Gleditsia spp.
+551,waterlocust,Gleditsia aquatica
+552,honeylocust,Gleditsia triacanthos
+555,loblolly-bay,Gordonia lasianthus
+561,"ginkgo, maidenhair tree",Ginkgo biloba
+571,Kentucky coffeetree,Gymnocladus dioicus
+580,silverbell spp.,Halesia spp.
+581,Carolina silverbell,Halesia carolina
+582,two-wing silverbell,Halesia diptera
+583,little silverbell,Halesia parviflora
+591,American holly,Ilex opaca
+600,walnut spp.,Juglans spp.
+601,butternut,Juglans cinerea
+602,black walnut,Juglans nigra
+603,northern California black walnut, Juglans hindsii
+604,southern California black walnut, Juglans californica
+605,Texas walnut,Juglans microcarpa
+606,Arizona walnut,Juglans major
+611,sweetgum,Liquidambar styraciflua
+621,yellow-poplar,Liriodendron tulipifera
+631,tanoak,Lithocarpus densiflorus
+641,Osage-orange,Maclura pomifera
+650,magnolia spp.,Magnolia spp.
+651,cucumbertree,Magnolia acuminata
+652,southern magnolia,Magnolia grandiflora
+653,sweetbay,Magnolia virginiana
+654,bigleaf magnolia,Magnolia macrophylla
+655,mountain or Fraser magnolia,Magnolia fraseri
+657,pyramid magnolia,Magnolia pyramidata
+658,umbrella magnolia,Magnolia tripetala
+660,apple spp.,Malus spp.
+661,Oregon crab apple,Malus fusca
+662,southern crab apple,Malus angustifolia
+663,sweet crab apple,Malus coronaria
+664,prairie crab apple,Malus ioensis
+680,mulberry spp.,Morus spp.
+681,white mulberry,Morus alba
+682,red mulberry,Morus rubra
+683,Texas mulberry,Morus microphylla
+684,black mulberry,Morus nigra
+690,tupelo spp.,Nyssa spp.
+691,water tupelo,Nyssa aquatica
+692,Ogeechee tupelo,Nyssa ogeche
+693,blackgum,Nyssa sylvatica
+694,swamp tupelo,Nyssa biflora
+701,eastern hophornbeam,Ostrya virginiana
+711,sourwood,Oxydendrum arboreum
+712,"paulownia, empress-tree",Paulownia tomentosa
+720,bay spp.,Persea spp.
+721,redbay,Persea borbonia
+722,"water-elm, planertree",Planera aquatica
+729,sycamore spp.,Platanus spp.
+730,California sycamore,Platanus racemosa
+731,American sycamore,Platanus occidentalis
+732,Arizona sycamore,Platanus wrightii
+740,cottonwood and poplar spp.,Populus spp.
+741,balsam poplar,Populus balsamifera
+742,eastern cottonwood,Populus deltoides
+743,bigtooth aspen,Populus grandidentata
+744,swamp cottonwood,Populus heterophylla
+745,plains cottonwood,Populus deltoides ssp. monilifera
+746,quaking aspen,Populus tremuloides
+747,black cottonwood,Populus balsamifera ssp. trichocarpa
+748,Fremont cottonwood,Populus fremontii
+749,narrowleaf cottonwood,Populus angustifolia
+752,silver poplar,Populus alba
+753,Lombardy poplar,Populus nigra
+755,mesquite spp.,Prosopis spp.
+756,honey mesquite,Prosopis glandulosa
+757,velvet mesquite,Prosopis velutina
+758,screwbean mesquite,Prosopis pubescens
+760,cherry and plum spp.,Prunus spp.
+761,pin cherry,Prunus pensylvanica
+762,black cherry,Prunus serotina
+763,chokecherry,Prunus virginiana
+764,peach,Prunus persica
+765,Canada plum,Prunus nigra
+766,American plum,Prunus americana
+768,bitter cherry,Prunus emarginata
+769,Allegheny plum,Prunus alleghaniensis
+770,Chickasaw plum,Prunus angustifolia
+771,"sweet cherry, domesticated",Prunus avium
+772,"sour cherry, domesticated",Prunus cerasus
+773,"European plum, domesticated",Prunus domestica
+774,"Mahaleb cherry, domesticated",Prunus mahaleb
+800,oak spp.,Quercus spp.
+801,California live oak,Quercus agrifolia
+802,white oak,Quercus alba
+803,Arizona white oak,Quercus arizonica
+804,swamp white oak,Quercus bicolor
+805,canyon live oak,Quercus chrysolepis
+806,scarlet oak,Quercus coccinea
+807,blue oak,Quercus douglasii
+808,Durand oak,Quercus sinuata var. sinuata
+809,northern pin oak,Quercus ellipsoidalis
+810,Emory oak,Quercus emoryi
+811,Engelmann oak,Quercus engelmannii
+812,southern red oak,Quercus falcata
+813,cherrybark oak,Quercus pagoda
+814,Gambel oak,Quercus gambelii
+815,Oregon white oak,Quercus garryana
+816,scrub oak,Quercus ilicifolia
+817,shingle oak,Quercus imbricaria
+818,California black oak,Quercus kelloggii
+819,turkey oak,Quercus laevis
+820,laurel oak,Quercus laurifolia
+821,California white oak,Quercus lobata
+822,overcup oak,Quercus lyrata
+823,bur oak,Quercus macrocarpa
+824,blackjack oak,Quercus marilandica
+825,swamp chestnut oak,Quercus michauxii
+826,chinkapin oak,Quercus muehlenbergii
+827,water oak,Quercus nigra
+828,Texas red oak,Quercus texana
+829,Mexican blue oak,Quercus oblongifolia
+830,pin oak,Quercus palustris
+831,willow oak,Quercus phellos
+832,chestnut oak,Quercus prinus
+833,northern red oak,Quercus rubra
+834,Shumard oak,Quercus shumardii
+835,post oak,Quercus stellata
+836,Delta post oak,Quercus similis
+837,black oak,Quercus velutina
+838,live oak,Quercus virginiana
+839,interior live oak,Quercus wislizeni
+840,dwarf post oak,Quercus margarettiae
+841,dwarf live oak,Quercus minima
+842,bluejack oak,Quercus incana
+843,silverleaf oak,Quercus hypoleucoides
+844,Oglethorpe oak,Quercus oglethorpensis
+845,dwarf chinkapin oak,Quercus prinoides
+846,gray oak,Quercus grisea
+847,netleaf oak,Quercus rugosa
+851,Chisos oak,Quercus graciliformis
+8511,Graves oak,Quercus gravesii
+8512,Mexican white oak,Quercus polymorpha
+8513,Buckley oak,Quercus buckleyi
+8514,Lacey oak,Quercus laceyi
+852,sea torchwood,Amyris elemifera
+853,pond-apple,Annona glabra
+854,gumbo limbo,Bursera simaruba
+855,sheoak spp.,Casuarina spp.
+856,gray sheoak,Casuarina glauca
+857,belah,Casuarina lepidophloia
+858,camphortree,Cinnamomum camphora
+859,Florida fiddlewood,Citharexylum fruticosum
+860,citrus spp.,Citrus spp.
+863,"tietongue, pigeon-plum",Coccoloba diversifolia
+865,largeleaf geigertree,Cordia sebestena
+866,carrotwood,Cupaniopsis anacardioides
+867,bluewood,Condalia hookeri
+868,blackbead ebony,Ebenopsis ebano
+869,great leucaene,Leucaena pulverulenta
+870,Texas sophora,Sophora affinis
+873,red stopper,Eugenia rhombea
+874,"butterbough, inkwood",Exothea paniculata
+876,Florida strangler fig,Ficus aurea
+877,"wild banyantree, shortleaf fig",Ficus citrifolia
+882,"beeftree, longleaf blolly",Guapira discolor
+883,manchineel,Hippomane mancinella
+884,false tamarind,Lysiloma latisiliquum
+885,mango,Mangifera indica
+886,Florida poisontree,Metopium toxiferum
+887,fishpoison tree,Piscidia piscipula
+888,"octopus tree, schefflera",Schefflera actinophylla
+890,false mastic,Sideroxylon foetidissimum
+891,"white bully, willow bustic",Sideroxylon salicifolium
+895,paradisetree,Simarouba glauca
+896,Java plum,Syzygium cumini
+897,tamarind,Tamarindus indica
+901,black locust,Robinia pseudoacacia
+902,New Mexico locust,Robinia neomexicana
+906,"Everglades palm, paurotis-palm",Acoelorraphe wrightii
+907,Florida silver palm,Coccothrinax argentata
+908,coconut palm,Cocos nucifera
+909,royal palm spp.,Roystonea spp.
+911,Mexican palmetto,Sabal mexicana
+912,cabbage palmetto,Sabal palmetto
+913,key thatch palm,Thrinax morrisii
+914,Florida thatch palm,Thrinax radiata
+915,other palms,Family Arecaceae not listed above
+919,western soapberry,Sapindus saponaria var. drummondii
+920,willow spp.,Salix spp.
+921,peachleaf willow,Salix amygdaloides
+922,black willow,Salix nigra
+923,Bebb willow,Salix bebbiana
+924,Bonpland willow,Salix bonplandiana
+925,coastal plain willow,Salix caroliniana
+926,balsam willow,Salix pyrifolia
+927,white willow,Salix alba
+928,Scouler's willow,Salix scouleriana
+929,weeping willow,Salix sepulcralis
+931,sassafras,Sassafras albidum
+934,mountain-ash spp.,Sorbus spp.
+935,American mountain-ash,Sorbus americana
+936,European mountain-ash,Sorbus aucuparia
+937,northern mountain-ash,Sorbus decora
+940,West Indian mahogany,Swietenia mahagoni
+950,basswood spp.,Tilia spp.
+951,American basswood,Tilia americana
+952,white basswood,Tilia americana var. heterophylla
+953,Carolina basswood,Tilia americana var. caroliniana
+970,elm spp.,Ulmus spp.
+971,winged elm,Ulmus alata
+972,American elm,Ulmus americana
+973,cedar elm,Ulmus crassifolia
+974,Siberian elm,Ulmus pumila
+975,slippery elm,Ulmus rubra
+976,September elm,Ulmus serotina
+977,rock elm,Ulmus thomasii
+981,California-laurel,Umbellularia californica
+982,Joshua tree,Yucca brevifolia
+986,black-mangrove,Avicennia germinans
+987,buttonwood-mangrove,Conocarpus erectus
+988,white-mangrove,Laguncularia racemosa
+989,American mangrove,Rhizophora mangle
+990,desert ironwood,Olneya tesota
+991,saltcedar,Tamarix spp.
+992,melaleuca,Melaleuca quinquenervia
+993,chinaberry,Melia azedarach
+994,Chinese tallowtree,Triadica sebifera
+995,tungoil tree,Vernicia fordii
+996,smoketree,Cotinus obovatus
+997,Russian-olive,Elaeagnus angustifolia
+998,Unknown dead hardwood,Tree broadleaf
+999,Other or unknown live tree,Tree unknown
